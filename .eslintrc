@@ -13,5 +13,8 @@
     "rules": {
         "semi": 1,
         "indent": ["warn", 2]
+    },
+    "globals": {
+        "process": true
     }
 }
