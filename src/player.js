@@ -10,4 +10,14 @@ class Player {
   revealLetter = () => {
 
   }
+  guessLetter = () => {
+
+  }
+  EndTurn = () => {
+    if (this.turn === false) {
+      return true
+    } else {
+      return false
+    }  
+  }
 }
