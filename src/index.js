@@ -8,9 +8,9 @@ import './css/styles.css';
 $(document).ready(function() {
     const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
     'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-    'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    'T', 'U', 'V', 'W', 'X', 'Y', 'Z','BLOCK','RANDOM'];
     alphabet.forEach(function(element) {
-      $('#alphaList').append('<li>' + element + '</li>');
+      $('ul#alphaList').append('<li>' + element + '</li>');
     })
 })
  
