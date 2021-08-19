@@ -6,21 +6,27 @@ import './css/styles.css';
 //import Player from './player.js';
 import KanyeHangman from './gameboard.js';
 
-  // let kanye = new KanyeHangman
-  // console.log(kanye.getKanyeQuote);
+//front end
+async function concealKanye(kanye) {
+  let response = await kanye.getKanyeQuote();
+  let abcReg = /[abcdefghijklmnopqrstuvwxyz]/gi;
+  let concealedStr = response.replaceAll(" ", "-");
+  concealedStr = concealedStr.replace(abcReg, " _");
+  $('h2#result').text(concealedStr);
+  return concealedStr;
+}
 
-$(document).ready(function() {
-    const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+$(document).ready(function () {
+  const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
     'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-    'T', 'U', 'V', 'W', 'X', 'Y', 'Z','BLOCK','RANDOM'];
-    alphabet.forEach(function(element) {
-      $('ul#alphaList').append(`<li id="${element}">${element}</li>`);
-    })
-    let kanye = new KanyeHangman();
+    'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'BLOCK', 'RANDOM'];
+  alphabet.forEach(function (element) {
+    $('ul#alphaList').append(`<li id="${element}">${element}</li>`);
+  })
+  let kanye = new KanyeHangman();
 
-  $('button').click(function(){
-    
+  $('button').click(function () {
     kanye.pushKanye(kanye.getKanyeQuote());
-    // console.log(kanye.alreadyUsedQuotes);
+    concealKanye(kanye);
   })
 })
