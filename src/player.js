@@ -1,19 +1,11 @@
-class Player {
-  constructor(name, score, turn) {
+export class Player {
+  constructor(name) {
     this.name = name;
-    this.score = 0;
-    this.turn = false;
+    // this.score = 0;
+    // this.turn = false;
   }
-  blockLetter = () => {
-
-  } 
-  revealLetter = () => {
-
-  }
-  guessLetter = () => {
-
-  }
-  EndTurn = () => {
+ 
+  EndTurn() {
     if (this.turn === false) {
       return true
     } else {
