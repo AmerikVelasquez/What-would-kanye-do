@@ -3,8 +3,11 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
 // import Kanye from './kanye.js';
-//import Player from './player.js';
-import KanyeHangman from './gameboard.js';
+// import { Player } from './player.js';
+import  KanyeHangman  from './gameboard.js';
+  
+  let kanye = new KanyeHangman();
+  let blockMode = false;
 
 $(document).ready(function () {
   let concealedStr = null;
@@ -13,42 +16,65 @@ $(document).ready(function () {
   // let tempReg = null;
 
   //initial conceal for quote once generate phrase is clicked
-  async function concealKanye(kanye) {
+  async function concealQuote(kanye) {
     let response = await kanye.getKanyeQuote();
     quote = response;
     let abcReg = /[abcdefghijklmnopqrstuvwxyz]/gi;
     concealedStr = response.replaceAll(" ", "-");
-    concealedStr = concealedStr.replace(abcReg, "_");
+    concealedStr = concealedStr.replaceAll(abcReg, "_");
     $('h2#result').text(concealedStr);
     return concealedStr;
   }
 
   //function for updating quote reg on char keyboard press
-  function updateKanye(attr) {
-    usedAlphaReg = usedAlphaReg.replace(attr, '');
+  function showGameState(attr) {
+    usedAlphaReg = usedAlphaReg.replaceAll(attr, '');
     let tempReg = new RegExp(usedAlphaReg, "gi");
     concealedStr = quote
     concealedStr = concealedStr.replaceAll(tempReg, "_");
     concealedStr = concealedStr.replaceAll(" ", "-");
     $('h2#result').text(concealedStr);
-  }
+    //  }
+   }
+
   const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
     'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
     'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
   alphabet.forEach(function (element) {
     $('ul#alphaList').append(`<li id="${element}" class="letter">${element}</li>`);
   })
-  let kanye = new KanyeHangman();
+
 
   $('#gen').click(function () {
-    $('button#gen').remove();
-    kanye.pushKanye(kanye.getKanyeQuote());
-    concealKanye(kanye);
+    //$('button#gen').remove();
+    $('#random').show();
+    $('#block').show();
+    kanye.duplicate(kanye.getKanyeQuote());
+    concealQuote(kanye); 
   })
+
   $('.letter').click(function () {
+    if(blockMode === true) {
+      this.remove()
+      blockMode = false;
+    }else {
+      this.remove();
+      let attr = this.getAttribute('id');
+      console.log(attr)
+      showGameState(attr);
+    } 
+  });
+
+  $('#random').click(async function() {
+    let letter = await kanye.revealLetter();
+    console.log(letter);
+    letter = letter.toUpperCase();
+    $(`#${letter}`).removeClass('letter').addClass('revealed');
     this.remove();
-    let attr = this.getAttribute('id');
-    // console.log(attr)
-    updateKanye(attr)
+  })
+
+  $('#block').click(function() {
+   blockMode = true;
+   this.remove();
   })
 })
