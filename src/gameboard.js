@@ -5,8 +5,8 @@ export default class KanyeHangman {
     this.lives = 12;
     this.alreadyUsedQuotes = [];
     this.correctGuessCounter = 0;
-    this.getPhrase = [];
-    this.blankPhrase = "";
+    this.phrase = [];
+    this.booLean = [];
   }
 
   async getKanyeQuote() {
@@ -16,11 +16,11 @@ export default class KanyeHangman {
     return response.quote;
   }
 
-  async pushKanye() {
+  async duplicate() {
     let response = await (this.getKanyeQuote());
     // console.log(response);
     if (this.alreadyUsedQuotes.includes(response)) {
-      this.pushKanye();
+      this.duplicate();
     } else {
       this.alreadyUsedQuotes.push(response);
     }
@@ -29,14 +29,28 @@ export default class KanyeHangman {
   }
 
   async blankKanye() {
-    let next = await (this.pushKanye());
-    this.getPhrase.push(next);
-    //this.blankPhrase.push(next);
-    return this.blankPhrase;
-    //  console.log(this.getPhrase);
-    //  console.log(this.blankPhrase);
+    let next = await (this.duplicate());
+    next = next.replaceAll(/[^A-z]+/gi, '');
+    this.phrase = next.split('');
+    return next;
   }
-
+  
+  async revealLetter() {
+    let max = await this.blankKanye();
+    let random = Math.floor(Math.random() * max.length);
+    let test = max[random];
+    for(let i = 0; i < this.phrase.length; i++) {
+      this.booLean.push(true);
+    }
+    console.log(this.booLean);
+    console.log(test);
+    if(this.booLean[random] === false) {
+      this.revealLetter();
+    }else {
+      this.booLean[random] = false;
+      return test;
+    }
+  }
 }
   // trackRoundguess = () => {
 
