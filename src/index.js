@@ -2,15 +2,22 @@ import $ from 'jquery';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
-// import Kanye from './kanye.js';
-// import { Player } from './player.js';
+import { Player } from './player.js';
 import  KanyeHangman  from './gameboard.js';
   
 let kanye = new KanyeHangman();
+let player = new Player();
 let blockMode = false;
 
+const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+  'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+  'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+alphabet.forEach(function (element) {
+  $('ul#alphaList').append(`<li id="${element}" class="letter">${element}</li>`);
+});
+
 $(document).ready(function () {
-  $('#kanye-pics').append('<img src="../img/kanye0.png">')
+  $('#kanye-pics').append('<img src="../assets/img/line.png">');
   let concealedStr = null;
   let quote = null;
   let usedAlphaReg = ('[ABCDEFGHIJKLMNOPQRSTUVWXYZ]');
@@ -35,16 +42,7 @@ $(document).ready(function () {
     concealedStr = concealedStr.replaceAll(tempReg, "_");
     concealedStr = concealedStr.replaceAll(" ", "-");
     $('h2#result').text(concealedStr);
-    //  }
   }
-
-  const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
-    'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-    'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-  alphabet.forEach(function (element) {
-    $('ul#alphaList').append(`<li id="${element}" class="letter">${element}</li>`);
-  });
-
 
   $('#gen').click(function () {
     $('button#gen').remove();
@@ -55,18 +53,20 @@ $(document).ready(function () {
   });
 
   $('.letter').click(function () {
+    let attr = this.getAttribute('id');
     if(blockMode === true) {
       this.remove();
       blockMode = false;
     }else {
+      let lowerAttr = attr.toLowerCase();
+      kanye.trackWrongGuess(lowerAttr);
       this.remove();
-      let attr = this.getAttribute('id');
-      console.log(attr);
       showGameState(attr);
-      for(let i = 0; i < alphabet.length; i++){ //needs fixing
+      for(let i = 0; i < alphabet.length; i++) { //needs fixing
         kanye.booLean[i] = false;
       }
     } 
+    player.endTurn();
   });
 
   $('#random').click(async function() {
@@ -76,10 +76,10 @@ $(document).ready(function () {
     $(`#${letter}`).removeClass('letter').addClass('revealed');
     this.remove();
     console.log(kanye.booLean);
-  }); //needs fixing
+  });
 
-  $('#block').click(function() { //works
+  $('#block').click(function() {
     blockMode = true;
-    this.remove();
+    //this.remove();
   });
 });
