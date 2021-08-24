@@ -95,6 +95,7 @@ height: 15vh;
   grid-template-areas: "card card2";
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr;
+  padding: 5em;
 }
 
 .player-one-card {
