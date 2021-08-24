@@ -1,15 +1,18 @@
+import $ from 'jquery';
 export class Player {
   constructor(name) {
     this.name = name;
     // this.score = 0;
-    // this.turn = false;
+    this.turn = false;
   }
  
-  EndTurn() {
+  endTurn() {
     if (this.turn === false) {
-      return true
+      $('#turn').text(`it is ${this.name} turn`);
+      this.turn = true;
     } else {
-      return false
+      $('#turn').text(`it is ${this.name} turn`);
+      this.turn = false;
     }  
   }
 }
