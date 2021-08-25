@@ -1,57 +1,76 @@
-import Kanye from "./kanye.js";
 
 export default class KanyeHangman {
   constructor() {
     this.lives = 10;
     this.alreadyUsedQuotes = [];
-    this.thePhrase = "";
     this.correctGuessCounter = 0;
     this.wrongGuessCounter = 0;
-    this.phrase = [];
-    this.booLean = [];
   }
 
-  async getKanyeQuote() {
-    let response = await (Kanye.getQuote());
-    return response.quote;
+  async getQuote() {
+    try {
+      const response = await fetch(`https://api.kanye.rest`);
+      if (!response.ok){
+        throw Error(response.statusText);
+
+      }
+      return response.json();
+      } catch (error) {
+      return error.message;
+    }
   }
 
-  async duplicate() {
-    let response = await (this.getKanyeQuote());
-    if (this.alreadyUsedQuotes.includes(response)) {
-      this.duplicate();
-    } else {
-      this.alreadyUsedQuotes.push(response);
-    }
-    response = response.replaceAll(/[^A-z]+/gi, '');
-    this.thePhrase = response;
-    this.phrase = response.split('');
-    for(let i = 0; i < this.phrase.length; i++) {
-      this.booLean.push(true);
-    }
-    return response;
-  }
-  
-  revealLetter() { //broken needs fixing
-    let max = this.thePhrase;
-    let random = Math.floor(Math.random() * max.length);
-    let test = max[random];
-    if(this.booLean[random] === false) {
-      this.revealLetter();
-    }else {
-      this.booLean[random] = false;
-      return test;
-    }
-  }
   trackWrongGuess (attr) {
-    console.log(this.thePhrase);
-    console.log(attr);
-    if(this.thePhrase.includes(attr)) {
+    if(this.quote.includes(attr)) {
       this.correctGuessCounter + 1;
     } else {
       this.wrongGuessCounter = this.wrongGuessCounter + 1;
       this.lives = this.lives - 1;
-      console.log(this.wrongGuessCounter);
+    }
+  }
+  calculateScore() {//put calculate score at next round button
+    let nonAlphaQuote = this.quote.replaceAll(/[^A-z]/gi, '');
+    let roundScore = Math.floor(nonAlphaQuote.length / 2);
+    return roundScore;
+  }
+
+  chooseRandom(str) {
+    if(this.uniqChars){
+      let int = Math.floor(Math.random() * this.uniqChars.length);
+      let randomChar = this.uniqChars.charAt(int);
+      this.uniqChars = this.uniqChars.replace(randomChar, '');
+      return randomChar;
+    } else {
+      //the blank array/str that will be returned
+      let uniqChars = "";
+      //predefined alphabet
+      let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+      //manipulate string given by our api
+      str = str.toLowerCase();
+      str = str.replaceAll(" ", "");
+      //split it into a usable array
+      let arr = str.split("");
+      //variable for use in forEach
+      let int = null;
+      let charIndex = null;
+      //forEach alphabet index
+      alphabet.forEach(element => {
+        charIndex = arr.indexOf(element);
+        if (charIndex !== -1) {
+          uniqChars = uniqChars.concat(arr[charIndex]);
+        }
+      });
+      //get integer between uniqCharacters list
+      int = Math.floor(Math.random() * uniqChars.length);
+      //create key-value pair in object
+      this.uniqChars = uniqChars;
+      //store chosen random character to delete from uniqChar string, and finally return
+      let randomChar = uniqChars.charAt(int);
+      //delete randomly selected character from unique characters in our phrase
+      this.uniqChars = this.uniqChars.replace(randomChar, '');
+
+      //reuturn <3
+      return randomChar;
     }
   }
 
@@ -74,37 +93,37 @@ export default class KanyeHangman {
     var imgArray = new Array();
 
     imgArray[0] = new Image();
-    imgArray[0].src = '../assets/kanye0.png';
+    imgArray[0].src = 'https://imgur.com/Nz9raO0';
     
     imgArray[1] = new Image();
-    imgArray[1].src = '../assets/kanye1.png';
+    imgArray[1].src = 'https://imgur.com/LOcbnyC';
 
     imgArray[2] = new Image();
-    imgArray[2].src = '../assets/kanye2.png';
+    imgArray[2].src = 'https://imgur.com/7CkSsln';
 
     imgArray[3] = new Image();
-    imgArray[3].src = '../assets/kanye3.png';
+    imgArray[3].src = 'https://imgur.com/OzeOAjq';
 
     imgArray[4] = new Image();
-    imgArray[4].src = '../assets/kanye4.png';
+    imgArray[4].src = 'https://imgur.com/OLHppzR';
 
     imgArray[5] = new Image();
-    imgArray[5].src = '../assets/kanye5.png';
+    imgArray[5].src = 'https://imgur.com/jUkzUXi';
 
     imgArray[6] = new Image();
-    imgArray[6].src = '../assets/kanye6.png';
+    imgArray[6].src = 'https://imgur.com/9a2kbmk';
 
     imgArray[7] = new Image();
-    imgArray[7].src = '../assets/kanye7.png';
+    imgArray[7].src = 'https://imgur.com/ftfHV8d';
 
     imgArray[8] = new Image();
-    imgArray[8].src = '../assets/kanye8.png';
+    imgArray[8].src = 'https://imgur.com/6UhIMvv';
     
     imgArray[9] = new Image();
-    imgArray[9].src = '../assets/kanye9.png';
+    imgArray[9].src = 'https://imgur.com/KlONx88';
 
     imgArray[10] = new Image();
-    imgArray[10].src = '../assets/kanye10.png';
+    imgArray[10].src = 'https://imgur.com/0inJgCQ';
 
     var img = document.getElementById();
 
@@ -129,11 +148,6 @@ export default class KanyeHangman {
       this.revealKanye(/*imgArray[i+1]*/);
     }
   }
+  
 }
-// trackRoundguess = {}() => {
 
-// }
-// trackAllGuesses = () => {
-
-// }
-// }
