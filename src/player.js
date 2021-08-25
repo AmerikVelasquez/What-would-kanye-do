@@ -1,8 +1,11 @@
 import $ from 'jquery';
+// import KanyeHangman from './gameboard.js';
+
 export class Player {
   constructor(name) {
     this.name = name;
-    // this.score = 0;
+    this.roundScore = 0;
+    this.finalScore = 0;
     this.turn = false;
   }
  
@@ -15,4 +18,9 @@ export class Player {
       this.turn = false;
     }  
   }
+
+  // totalScore(){
+  //  
+  //   }
+  //}
 }
