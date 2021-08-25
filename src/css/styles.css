@@ -105,3 +105,8 @@ height: 15vh;
 .player-two-card {
   grid-area: card2;
 }
+
+.card-text{
+border: none;
+/* grid-area: card3; */
+}
