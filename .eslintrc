@@ -12,7 +12,8 @@
     },
     "rules": {
         "semi": 1,
-        "indent": ["warn", 2]
+        "indent": ["warn", 2],
+        "require-atomic-updates": "off"
     },
     "globals": {
         "process": true
