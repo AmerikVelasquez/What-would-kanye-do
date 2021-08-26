@@ -1,5 +1,4 @@
 import $ from 'jquery';
-// import KanyeHangman from './gameboard.js';
 
 export class Player {
   constructor(name) {
@@ -11,16 +10,11 @@ export class Player {
  
   endTurn() {
     if (this.turn === false) {
-      $('#turn').text(`it is ${this.name} turn`);
+      $('#turn').text(`it is ${$("#player-one-name").val()}'s turn.`);
       this.turn = true;
     } else {
-      $('#turn').text(`it is ${this.name} turn`);
+      $('#turn').text(`it is ${$("#player-two-name").val()}'s turn.`);
       this.turn = false;
     }  
   }
-
-  // totalScore(){
-  //  
-  //   }
-  //}
 }
