@@ -12,18 +12,18 @@ const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
   'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
   'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
+let kanye = new KanyeHangman;
 
 
 $(document).ready(function () {
-  // generate the keyboard
   alphabet.forEach(function (element) {
     $('ul#alphaList').append(`<li id="${element}" class="letter">${element}</li>`);
   });
+  $('#text-guess').val('');
+
   $('ul#alphaList').hide();
-  // $('#kanye-pics').append('<img src="../assets/img/line.png">');
   let usedAlphaReg = ('[ABCDEFGHIJKLMNOPQRSTUVWXYZ]');
 
-  // initial conceal for quote once generate phrase is clicked
   function concealQuote(kanye) {
     let abcReg = /[abcdefghijklmnopqrstuvwxyz]/gi;
     let quote = kanye.quote;
@@ -33,7 +33,6 @@ $(document).ready(function () {
     return kanye.concealedStr;
   }
 
-  // //function for updating quote reg on char keyboard press
   function showGameState(attr) {
     usedAlphaReg = usedAlphaReg.replaceAll(attr, '');
     let tempReg = new RegExp(usedAlphaReg, "gi");
@@ -43,30 +42,52 @@ $(document).ready(function () {
     $('h2#result').text(kanye.concealedStr);
   }
 
-  let kanye = new KanyeHangman;
-
-  $('#gen').click(async function () {
-    $('button#gen').remove();
+  $('.gen').click(async function () {
+    $('.gameboard').fadeIn();
+    $('.instructions').fadeOut();
+    $('button.gen').remove();
     $('#random').fadeIn();
     $('#block').fadeIn();
     let response = await kanye.getQuote();
+    kanye.getUniqChars(response.quote);
     kanye.quote = response.quote;
     concealQuote(kanye);
     $('ul#alphaList').fadeIn();
+    player.endTurn();
   });
 
   $('.letter').click(function () {
     let attr = this.getAttribute('id');
-    this.remove();
     if (blockMode === true) {
+      this.remove();
       blockMode = false;
     } else {
+      kanye.removeUniqChar(attr);
       let lowerAttr = attr.toLowerCase();
       kanye.trackWrongGuess(lowerAttr);
       this.remove();
       showGameState(attr);
+      $('img#reveal-kanye').attr('src', kanye.revealKanye());
     }
     player.endTurn();
+    if (kanye.winLoss() === true) {
+      $('.gameboard').hide();
+      $('#win').show();
+    } else if (kanye.winLoss() === false) {
+      $('.gameboard').hide();
+      $('#loss').show();
+    }
+  });
+
+  $('#button-guess').click(function(){
+    let guess = $('#text-guess').val();
+    if (kanye.guess(guess) === true) {
+      $('.gameboard').hide();
+      $('#win').show();
+    } else {
+      $('.gameboard').hide();
+      $('#loss').show();
+    }
   });
 
   $('#random').click(function () {
