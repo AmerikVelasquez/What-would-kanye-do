@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@900&display=swap');
+
 :root {
 --kanye-red: #6A3D39;
 --kanye-black: #2D2D2D;
@@ -5,17 +7,47 @@
 --kanye-white: #FAF5F0;
 }
 
+.instructions {
+  background: url('https://i.imgur.com/DPcnVgS.jpg'), linear-gradient(#3E3E3E, #6A3D39);
+  height: 100vh;
+  width:100vw;
+  background-position: center;
+  background-repeat: no-repeat;
+  object-fit: cover;
+}
+
+.instructions h1 {
+  color: var(--kanye-white);
+  font-size: 60px;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+button#gen{
+  border-radius: 5%;
+  font-size: xx-large;
+  /* border: none; */
+  background-color: var(--kanye-gray);
+  color: var(--kanye-white);
+  font-style: italic;
+  /* text-decoration: underline; */
+}
+
+.gameboard {
+  display:none;
+  background: linear-gradient(#FAF5F0, #6A3D39);
+}
 
 body {
-background: #FAF5F0;
+font-family: 'Grenze Gotisch', cursive;
+font-size: large;
 text-align: center;
 }
 
 h1, h2, h3 {
-font-family: "Roboto", sans-serif; 
 font-weight: bolder;
 /* text-transform: uppercase; */
-color: var(--kanye-red);
+color: var(--kanye-black);
 }
 
 .letter {
@@ -80,6 +112,8 @@ height: 15vh;
 
 #random {
   display:none;
+  border: none;
+  background-color: var(--kanye-gray);
 }
 
 #block {
@@ -96,6 +130,7 @@ height: 15vh;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr;
   padding: 5em;
+  align-items: center;
 }
 
 .player-one-card {
@@ -108,5 +143,47 @@ height: 15vh;
 
 .card-text{
 border: none;
-/* grid-area: card3; */
+background-color: transparent;
+}
+
+.card-image{
+  height: 300px;
+  width: auto;
+  background-color: var(--kanye-white);
+}
+
+.card-body {
+  background-color: var(--kanye-white);
+}
+
+.score {
+  background-color: var(--kanye-gray);
+  width: auto;
+  height:auto;
+  padding: 1em;
+  margin:none;
+  color: var(--kanye-white)
+}
+
+img#reveal-kanye{
+  width: 200px;
+  height: 200px;
+  border: none;
+}
+
+#win {
+  display: none;
+  background-color: linear-gradient(var(--kanye-gray), var(--kanye-white));
+}
+
+#loss {
+  display:none;
+}
+
+#text-guess{
+  margin-top: 6px;
+  background-color: transparent;
+  border-radius: 5px;
+  width: 25%;
+  height: 40px;
 }
